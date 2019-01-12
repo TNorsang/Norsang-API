@@ -1,4 +1,3 @@
-
 {
   "name": "project1",
   "version": "1.0.0",
@@ -16,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/TNorsang/Project-1/issues"
   },
-  "homepage": "https://github.com/TNorsang/Project-1#readme"
+  "homepage": "https://github.com/TNorsang/Project-1#readme",
+  "dependencies": {
+    "jshint": "^2.9.7"
+  }
 }
