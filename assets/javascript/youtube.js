@@ -18,28 +18,7 @@ $(document).ready(function () {
     
         }
 
-
-        var tag = document.createElement('script');
-
-        tag.src = "https://www.youtube.com/iframe_api";
-        var firstScriptTag = document.getElementsByTagName('script')[0];
-        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-  
-        // 3. This function creates an <iframe> (and YouTube player)
-        //    after the API code downloads.
-        var player;
-        function onYouTubeIframeAPIReady() {
-          player = new YT.Player('player', {
-            height: '390',
-            width: '640',
-            videoId: 'M7lc1UVf-VE',
-            events: {
-              'onReady': onPlayerReady,
-              'onStateChange': onPlayerStateChange
-            }
-          });
-        }
-  
+        
         $('#search-term').submit(function (event) {
             event.preventDefault();
             var searchTerm = $('.ytBox').val();
@@ -51,15 +30,15 @@ $(document).ready(function () {
             var params = {
                 part: 'snippet',
                 key: key,
-                q: searchTerm,
-                maxResults: '1',
+                q: searchTerm
             };
     
             $.ajax({
                 url: url,
                 dataType: 'json',
                 data: params,
-                success: showResults
+                success: showResults,
+                maxResults: '2',
               }).then(function (response) {
                   console.log(response);
               });
