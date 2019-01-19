@@ -37,6 +37,8 @@ $(document).ready(function () {
                 dataType: 'json',
                 data: params,
                 success: showResults
+              }).then(function (response) {
+                  console.log(response);
               });
             // console.log($.getJSON(url, params, showResults));
         
