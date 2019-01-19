@@ -17,6 +17,29 @@ $(document).ready(function () {
             $('#search-results').html(html);
     
         }
+
+
+        var tag = document.createElement('script');
+
+        tag.src = "https://www.youtube.com/iframe_api";
+        var firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+  
+        // 3. This function creates an <iframe> (and YouTube player)
+        //    after the API code downloads.
+        var player;
+        function onYouTubeIframeAPIReady() {
+          player = new YT.Player('player', {
+            height: '390',
+            width: '640',
+            videoId: 'M7lc1UVf-VE',
+            events: {
+              'onReady': onPlayerReady,
+              'onStateChange': onPlayerStateChange
+            }
+          });
+        }
+  
         $('#search-term').submit(function (event) {
             event.preventDefault();
             var searchTerm = $('.ytBox').val();
@@ -28,10 +51,10 @@ $(document).ready(function () {
             var params = {
                 part: 'snippet',
                 key: key,
-                q: searchTerm
+                q: searchTerm,
+                maxResults: '1',
             };
     
-            // $.getJSON(url, params, showResults);
             $.ajax({
                 url: url,
                 dataType: 'json',
@@ -40,7 +63,7 @@ $(document).ready(function () {
               }).then(function (response) {
                   console.log(response);
               });
-            // console.log($.getJSON(url, params, showResults));
+           
         
         }
 
@@ -48,48 +71,3 @@ $(document).ready(function () {
 });
 
 
-
-
-   
-
-
-
-
-
-
-
-
-
-
-
-        // $.ajax({
-            //         // crossOrigin: true,
-            //         url: url,
-            //         method: "GET",
-            //         params: params
-            //      }).then(function (results) {
-            //          console.log(results);
-            //         showResults(results);
-            //      });
-             
-            
-            //     function showResults(results) {
-            //     var html = "";
-            //     var entries = results.items;
-            
-            //     for (i=0; i < entries.length; i++) {
-            //         var title = entries[i].snippet.title;
-            //         var thumbnail = entries[i].snippet.thumbnails.default.url;
-            //         html += '<p>' + title + '</p>';
-            //         html += '<img src="' + thumbnail + '">';
-            //     }
-            
-            //     $('#search-results').html(html);
-            
-            //     $('#search-term').submit(function (event) {
-            //         event.preventDefault();
-                    
-            //         getRequest(searchTerm);
-            //     });
-            
-            // };
