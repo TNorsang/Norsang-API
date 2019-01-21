@@ -1,7 +1,8 @@
 $(document).ready(function () {
     //-------------------- This is the variable Key ---------------\\
     var key = "AIzaSyD-D_v3VA2ZyoLiCLSSsCO7q81FaSnRLHA";
-    var url = 'http://www.googleapis.com/youtube/v3/search';
+    var url = 'https://www.googleapis.com/youtube/v3/search';
+    var iframeURL = "https://www.youtube.com/iframe_api";
 
         function showResults(results) {
             var html = "";
@@ -18,7 +19,6 @@ $(document).ready(function () {
     
         }
 
-        
         $('#search-term').submit(function (event) {
             event.preventDefault();
             var searchTerm = $('.ytBox').val();
@@ -26,11 +26,14 @@ $(document).ready(function () {
         });
     
         function getRequest(searchTerm) {
-            var url = 'https://www.googleapis.com/youtube/v3/search';
+
             var params = {
+                // The part Param grabs the specific datas
+                
                 part: 'snippet',
                 key: key,
-                q: searchTerm
+                q: searchTerm,
+                maxResults: '1',
             };
     
             $.ajax({
@@ -38,14 +41,67 @@ $(document).ready(function () {
                 dataType: 'json',
                 data: params,
                 success: showResults,
-                maxResults: '2',
               }).then(function (response) {
                   console.log(response);
+
+                  var player;
+
+                player = new YT.Player('player', {
+                  height: '390',
+                  width: '640',
+                  videoId: response.items.videoid,
+                  events: {
+                    'onReady': onPlayerReady,
+                    'onStateChange': onPlayerStateChange
+                  }
+                });
+              console.log(player);
               });
-           
+
+              
         
         }
 
+        var tag = document.createElement('script');
+
+        tag.src = "https://www.youtube.com/iframe_api";
+
+        var firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+  
+        // 3. This function creates an <iframe> (and YouTube player)
+        //    after the API code downloads.
+        var player;
+        function onYouTubeIframeAPIReady() {
+          player = new YT.Player('player', {
+            height: '390',
+            width: '640',
+            videoId: 'M7lc1UVf-VE',
+            events: {
+              'onReady': onPlayerReady,
+              'onStateChange': onPlayerStateChange
+            }
+          });
+        }
+  
+        // 4. The API will call this function when the video player is ready.
+        function onPlayerReady(event) {
+          event.target.playVideo();
+        }
+  
+        // 5. The API calls this function when the player's state changes.
+        //    The function indicates that when playing a video (state=1),
+        //    the player should play for six seconds and then stop.
+        var done = false;
+        function onPlayerStateChange(event) {
+          if (event.data == YT.PlayerState.PLAYING && !done) {
+            setTimeout(stopVideo, 6000);
+            done = true;
+          }
+        }
+        function stopVideo() {
+          player.stopVideo();
+        }
        
 });
 
